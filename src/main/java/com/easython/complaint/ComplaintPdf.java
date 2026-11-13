@@ -79,7 +79,7 @@ public class ComplaintPdf {
 			c.gap(12);
 
 			// ③ 면책
-			c.pair(d.disclaimer(), "", 9, true);
+			c.pair(messages.getMessage("disclaimer.default", null, ko), "", 9, true); // 제출용 한국어 면책(조회 언어와 무관)
 			if (twin) c.pair(messages.getMessage("disclaimer.default", null, tr), "", 9, true);
 			c.close();
 
