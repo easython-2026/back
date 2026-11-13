@@ -19,6 +19,12 @@ public class AiConfig {
 	AiClient aiClient(@Value("${app.ai.provider}") String provider, @Value("${app.ai.api-key}") String apiKey,
 			@Value("${app.ai.base-url}") String baseUrl, @Value("${app.ai.model}") String model,
 			@Value("${app.ai.timeout-seconds}") long timeoutSeconds, JsonMapper json) {
+		if ("gateway".equalsIgnoreCase(provider) && apiKey.isBlank()) {
+			throw new IllegalStateException("AI_API_KEY is required when AI_PROVIDER=gateway");
+		}
+		if (!provider.isBlank() && !"gateway".equalsIgnoreCase(provider) && !"mock".equalsIgnoreCase(provider)) {
+			throw new IllegalArgumentException("AI_PROVIDER must be gateway or mock");
+		}
 		if ("mock".equalsIgnoreCase(provider) || apiKey.isBlank()) {
 			log.warn("AI 키가 없거나 mock 설정입니다. 데모용 모의 응답을 사용합니다.");
 			return new MockAiClient();

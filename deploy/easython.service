@@ -1,0 +1,21 @@
+[Unit]
+Description=Easython backend
+Wants=network-online.target
+After=network-online.target
+
+[Service]
+User=easython
+Group=easython
+WorkingDirectory=/opt/easython
+Environment=SPRING_PROFILES_ACTIVE=prod
+EnvironmentFile=/etc/easython/easython.env
+ExecStart=/usr/bin/java -Xms128m -Xmx384m -XX:+ExitOnOutOfMemoryError -jar /opt/easython/easython.jar
+Restart=on-failure
+RestartSec=5
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectHome=true
+ProtectSystem=strict
+
+[Install]
+WantedBy=multi-user.target

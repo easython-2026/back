@@ -15,7 +15,7 @@ class ComplaintDraftBuilderTest {
 	static Input input(int expected, int actual, List<Item> items, List<String> uncertainties) {
 		return new Input("Tuan", "OO농장", "경기도 포천시 샘플로 1", "김OO", LocalDate.parse("2026-10-01"), LocalDate.parse("2026-10-31"),
 				"HOURLY", 9500, "08:00", "18:00", List.of("MON", "TUE", "WED", "THU", "FRI", "SAT"), 10, 350000, 26, 15600, expected, actual,
-				expected - actual, items, uncertainties, 57);
+				expected - actual, items, uncertainties, 57, 26, 0);
 	}
 
 	@Test
@@ -55,6 +55,13 @@ class ComplaintDraftBuilderTest {
 		var out = ComplaintDraftBuilder.build(input(1_000_000, 1_200_000, List.of(), List.of()));
 		assertEquals(0, out.unpaidAmount());
 		assertTrue(out.claims().isEmpty());
+	}
+
+	@Test
+	void recordBasisIsStatedTruthfully() {
+		assertEquals("출퇴근 기록은 모두 사후에 직접 입력한 기록입니다", ComplaintDraftBuilder.recordBasis(0, 3));
+		assertEquals("이 중 20일은 GPS 위치 인증, 사진, 서버 기록 시각으로 남아 있고, 6일은 사후에 직접 입력한 기록입니다", ComplaintDraftBuilder.recordBasis(20, 6));
+		assertTrue(ComplaintDraftBuilder.recordBasis(26, 0).startsWith("출퇴근은 GPS"));
 	}
 
 	@Test

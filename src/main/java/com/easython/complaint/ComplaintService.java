@@ -39,6 +39,7 @@ public class ComplaintService {
 	private final PayComparisonRepository comparisons;
 	private final ComparisonService comparisonService;
 	private final ContractRepository contracts;
+	private final com.easython.attendance.WorkRecordRepository records;
 	private final UserRepository users;
 	private final EvidenceService evidence;
 	private final ComplaintPdf pdf;
@@ -94,12 +95,15 @@ public class ComplaintService {
 		var contract = contracts.findById(cmp.getContractId()).orElseThrow();
 		User u = users.findById(c.getUserId()).orElseThrow();
 
+		var periodRecords = records.findByUserIdAndWorkDateBetweenOrderByWorkDateAsc(c.getUserId(), c.getPeriodStart(), c.getPeriodEnd());
 		var in = new ComplaintDraftBuilder.Input(u.getName(), c.getRespondentName(), c.getRespondentAddress(), c.getRespondentOwner(),
 				c.getPeriodStart(), c.getPeriodEnd(), contract.getWageType(), contract.getWageAmount(), contract.getWorkStartTime(), contract.getWorkEndTime(),
 				contract.workDayList(), contract.getPayday(), contract.getMealDeduction(), detail.appliedConditions().workDays(),
 				detail.appliedConditions().workedMinutes(), detail.expectedAmount(), detail.actualAmount(), detail.differenceAmount(),
 				detail.items().stream().map(i -> new ComplaintDraftBuilder.Item(i.type(), i.label(), i.expected(), i.actual(), i.difference())).toList(),
-				detail.uncertainties().stream().map(x -> x.message()).toList(), c.evidenceIdList().size());
+				detail.uncertainties().stream().map(x -> x.message()).toList(), c.evidenceIdList().size(),
+				(int) periodRecords.stream().filter(x -> x.getSource() == com.easython.attendance.WorkRecord.Source.DEVICE).count(),
+				(int) periodRecords.stream().filter(x -> x.getSource() == com.easython.attendance.WorkRecord.Source.MANUAL).count());
 		var out = ComplaintDraftBuilder.build(in);
 		c.setTitleKo(out.title());
 		c.setBodyKo(out.body());

@@ -19,7 +19,7 @@ public final class ComplaintDraftBuilder {
 	public record Input(String complainantName, String respondentName, String respondentAddress, String respondentOwner,
 			LocalDate periodStart, LocalDate periodEnd, String wageType, Integer wageAmount, String workStartTime, String workEndTime,
 			List<String> workDays, Integer payday, Integer mealDeduction, int workedDays, int workedMinutes, int expected, int actual,
-			int difference, List<Item> items, List<String> uncertaintyMessages, int evidenceCount) {}
+			int difference, List<Item> items, List<String> uncertaintyMessages, int evidenceCount, int deviceDays, int manualDays) {}
 
 	public record Output(String title, String body, String summary, List<Claim> claims, int unpaidAmount) {}
 
@@ -43,8 +43,8 @@ public final class ComplaintDraftBuilder {
 		if (in.mealDeduction() != null && in.mealDeduction() > 0) parts.add("숙식비 공제 매월 " + won(in.mealDeduction()) + "원");
 		p.add(contract.append(String.join(", ", parts)).append(".").toString());
 
-		p.add("【근무 사실】 해당 기간 %d일 근무하였고, 총 실근무시간은 %s입니다. 출퇴근은 GPS 위치 인증, 사진, 서버 기록 시각으로 남아 있습니다(첨부 증거 %d건 참고)."
-				.formatted(in.workedDays(), hours, in.evidenceCount()));
+		p.add("【근무 사실】 해당 기간 %d일 근무하였고, 총 실근무시간은 %s입니다. %s(첨부 증거 %d건 참고)."
+				.formatted(in.workedDays(), hours, recordBasis(in.deviceDays(), in.manualDays()), in.evidenceCount()));
 
 		StringBuilder wage = new StringBuilder("【임금 내역】 근로계약과 근무기록에 따른 예상 임금은 %s원이나, 실제 지급받은 금액은 %s원으로 %s원이 지급되지 않았습니다."
 				.formatted(won(in.expected()), won(in.actual()), won(unpaid)));
@@ -63,6 +63,13 @@ public final class ComplaintDraftBuilder {
 				.formatted(period, in.wageAmount() == null ? "계약 조건 미확인" : ("MONTHLY".equals(in.wageType()) ? "월급 " : "시급 ") + won(in.wageAmount()) + "원",
 						hours, won(in.expected()), won(in.actual()), won(unpaid), in.evidenceCount());
 		return new Output("임금 체불 진정서", String.join("\n\n", p), summary, claims, unpaid);
+	}
+
+	/** 기록의 근거를 사실대로: 앱 인증 기록(GPS·사진·서버 시각)과 사후 수동 입력 기록을 구분한다. */
+	static String recordBasis(int deviceDays, int manualDays) {
+		if (manualDays == 0) return "출퇴근은 GPS 위치 인증, 사진, 서버 기록 시각으로 남아 있습니다";
+		if (deviceDays == 0) return "출퇴근 기록은 모두 사후에 직접 입력한 기록입니다";
+		return "이 중 %d일은 GPS 위치 인증, 사진, 서버 기록 시각으로 남아 있고, %d일은 사후에 직접 입력한 기록입니다".formatted(deviceDays, manualDays);
 	}
 
 	/** 항목별 차액(근로자에게 불리한 방향으로 차이가 나는 항목만). 항목이 없으면(수령액만 입력) 총 차액 한 줄. */

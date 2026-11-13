@@ -33,7 +33,8 @@ AI_LIVE_TEST=1 AI_API_KEY=... ./gradlew test --tests '*GatewayAiLiveTest'
 | `CORS_ORIGINS` | 허용 프론트 주소(쉼표 구분) | `http://localhost:5173,http://localhost:3000` |
 | `AI_API_KEY` (또는 `DKU_API_KEY`) | AI 게이트웨이 키. 없으면 데모용 모의 응답 | - |
 | `AI_BASE_URL` `AI_MODEL` | OpenAI 호환 게이트웨이 주소·모델 | dku-chat / `anthropic/claude-haiku-4.5` |
-| `AI_PROVIDER` | `mock` 이면 키가 있어도 모의 응답 | - |
+| `AI_PROVIDER` | `mock` 강제 모의, `gateway` 실제 키 필수 | 로컬 자동, 운영 `gateway` |
+| `STORAGE_BACKEND`, `AWS_REGION`, `S3_BUCKET` | `local` 또는 `s3` 저장소 설정 | 로컬 `local`, 운영 `s3` |
 | `STORAGE_DIR` | 증거 파일 저장 폴더 | `~/easython-uploads` |
 | `PUBLIC_BASE_URL` | 파일 서명 URL 앞에 붙일 주소 | (상대경로) |
 | `PDF_FONT_PATH` | 진정서 PDF 한글 TTF(Noto Sans KR 권장). 없으면 시스템 폰트 탐색 | - |
@@ -62,11 +63,8 @@ AI_LIVE_TEST=1 AI_API_KEY=... ./gradlew test --tests '*GatewayAiLiveTest'
 - 금액·날짜가 중요한 문서(진정서·상담 요약·임금 설명)는 코드 템플릿으로 만들고 AI 는 번역에만 쓴다.
 - 긴급도는 금액·계약 종료일 규칙으로 *제안*만 하고 확정은 담당자가 한다.
 - 증거 원본은 덮어쓰기 불가, 조회는 만료되는 서명 URL로만.
-- 남은 것: 파일 저장을 S3로 교체(`FileStorage`), 배포(EC2·RDS·HTTPS), 주휴수당·야간·휴일 가산(현재 "미지원"으로 표시).
+- 운영 프로필은 비공개 S3와 만료되는 presigned URL을 사용한다. 주휴수당·야간·휴일 가산은 현재 "미지원"으로 표시한다.
 
-## 운영 배포 시 체크
+## 운영 배포와 데모
 
-1. `DEMO_ENABLED=false`, `JWT_SECRET`, DB, `CORS_ORIGINS`, `PUBLIC_BASE_URL` 지정
-2. 상담기관·담당자는 DB 에 직접 등록(담당자: `users.role='ADMIN'`, `agency_id` 지정, 비밀번호는 BCrypt 해시)
-3. `PDF_FONT_PATH` 에 한글+베트남어 글리프가 있는 TTF 지정(예: Noto Sans KR)
-4. 최저임금 `app.payroll.min-wage-hourly`/`min-wage-year` 를 해마다 갱신
+[EC2·RDS·S3·HTTPS 배포 및 투안 리허설](deploy/README.md)을 따른다. 실제 상담기관과 담당자 계정은 운영 DB에 등록한다(담당자는 `users.role='ADMIN'`, `agency_id` 지정, 비밀번호는 BCrypt 해시). 최저임금 설정은 해마다 확인한다.
