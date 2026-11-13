@@ -33,3 +33,18 @@ python3 scripts/demo-smoke.py http://127.0.0.1:8080 /tmp/easython-demo.pdf
 | 번역 | 베트남어·영어 원어민이 계약 조항, 알림, 진정서의 금액·날짜·용어와 표현을 검수한다. |
 | 임금 | 노무 검수자가 비교 결과와 계산 근거를 대조한다. 주휴·야간·휴일 가산은 현재 미지원이며 차액이 최종 체불액으로 보이지 않는지 화면도 검수한다. |
 | 실기기 | iOS Safari와 Android Chrome에서 HTTPS 프론트로 로그인해 위치 승인/거부, 카메라 업로드, CORS, 서명 URL의 접근/만료와 PDF 다운로드를 확인한다. |
+
+## 4. CI/CD (GitHub Actions)
+
+`.github/workflows/ci-cd.yml`
+
+| 언제 | 동작 |
+| --- | --- |
+| PR, push | `./gradlew test bootJar` (실패 시 테스트 리포트를 아티팩트로 첨부) |
+| `main` 반영 | 테스트 통과 후 `production` 환경으로 배포: JAR·배포 스크립트·환경 파일을 배포 버킷에 올리고 SSM으로 `deploy/remote-deploy.sh` 실행 → 재시작 → 상태 확인. 실패하면 이전 JAR·환경 파일로 자동 롤백하고 워크플로는 실패 |
+
+- AWS 접근: GitHub OIDC로 `easython-github-deploy` 역할을 임시로 받는다(장기 액세스 키 없음). 이 역할은 `repo:easython-2026/back:environment:production`에서만 받을 수 있고, 권한은 배포 버킷 쓰기와 해당 EC2에 대한 `AWS-RunShellScript` 실행뿐이다.
+- 비밀값: 저장소 Settings → Environments → `production` 의 **Secrets**(`DB_PASSWORD`, `JWT_SECRET`, `AI_API_KEY`, 선택 `MAIL_USERNAME`·`MAIL_PASSWORD`). 이 환경은 `main` 브랜치에서만 사용할 수 있다.
+- 비밀이 아닌 설정: 같은 환경의 **Variables**(`DB_URL`, `CORS_ORIGINS`, `PUBLIC_BASE_URL`, `S3_BUCKET`, `AI_PROVIDER`, `HEALTH_URL`, 배포용 `AWS_DEPLOY_ROLE_ARN`·`EC2_INSTANCE_ID`·`DEPLOY_BUCKET` 등).
+- 서버 환경 파일(`/etc/easython/easython.env`)은 배포 때마다 Secrets·Variables로 새로 만들어진다. 서버에서 직접 고친 값은 다음 배포 때 덮어쓰이므로, 값은 GitHub에서 바꾸고 재배포(Actions → CI/CD → Run workflow, main 선택)한다.
+- 비밀값이 든 환경 파일은 배포 버킷 `env/`에 암호화(SSE-S3)로 잠깐 올라가고, 서버가 받자마자 지운다. 남더라도 1일 뒤 수명 주기 규칙으로 삭제된다. 릴리스 JAR는 30일 보관.
