@@ -1,0 +1,52 @@
+{
+  "title": "증거 목록(사진·수동 기록·계약서 등, 해시 포함)",
+  "request": {
+    "method": "GET",
+    "path": "/api/v1/evidences",
+    "query": null,
+    "auth": "Bearer <근로자 토큰>",
+    "body": null
+  },
+  "status": 200,
+  "response": {
+    "success": true,
+    "data": {
+      "evidences": [
+        {
+          "id": "ATTENDANCE_PHOTO-24db5145-adfd-45d4-8e4c-ad97e81e3f64",
+          "type": "ATTENDANCE_PHOTO",
+          "title": "2026-11-15 Ảnh chấm công ra",
+          "occurredAt": "2026-11-15T00:05:34+09:00",
+          "refType": "attendance_record",
+          "refId": "9c77a82c-7082-4cd2-9bda-18c4c3ec2c2d",
+          "hash": "6072252c2f8b9a61766d15d4984f029089565cca3b1fc514c5e9c59d3a350595"
+        },
+        {
+          "id": "GPS_LOG-24db5145-adfd-45d4-8e4c-ad97e81e3f64",
+          "type": "GPS_LOG",
+          "title": "2026-11-15 Nhật ký GPS lúc ra",
+          "occurredAt": "2026-11-15T00:05:34+09:00",
+          "refType": "attendance_record",
+          "refId": "9c77a82c-7082-4cd2-9bda-18c4c3ec2c2d",
+          "hash": null
+        },
+        {
+          "id": "TIMESTAMP-24db5145-adfd-45d4-8e4c-ad97e81e3f64",
+          "type": "TIMESTAMP",
+          "title": "2026-11-15 Dấu thời gian máy chủ lúc ra",
+          "occurredAt": "2026-11-15T00:05:34+09:00",
+          "refType": "attendance_record",
+          "refId": "9c77a82c-7082-4cd2-9bda-18c4c3ec2c2d",
+          "hash": null
+        },
+        "... 외 17건 생략"
+      ],
+      "pageInfo": {
+        "currentPage": 1,
+        "totalPages": 2,
+        "totalCount": 35
+      }
+    },
+    "message": null
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "title": "오류 형식 — 근로자 토큰으로 관리자 API(403)",
+  "request": {
+    "method": "GET",
+    "path": "/api/v1/admin/dashboard",
+    "query": null,
+    "auth": "Bearer <근로자 토큰>",
+    "body": null
+  },
+  "status": 403,
+  "response": {
+    "success": false,
+    "data": null,
+    "message": "Bạn không có quyền truy cập.",
+    "errorCode": "FORBIDDEN"
+  }
+}

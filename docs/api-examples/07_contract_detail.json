@@ -1,0 +1,111 @@
+{
+  "title": "근로계약서 AI 분석 결과(조건 추출·검토 항목·조항 원문/번역·요약)",
+  "request": {
+    "method": "GET",
+    "path": "/api/v1/contracts/617a496a-99c4-4c7f-acbf-c2a3410206f0",
+    "query": null,
+    "auth": "Bearer <근로자 토큰>",
+    "body": null
+  },
+  "status": 200,
+  "response": {
+    "success": true,
+    "data": {
+      "id": "617a496a-99c4-4c7f-acbf-c2a3410206f0",
+      "status": "DONE",
+      "failReason": null,
+      "confirmed": true,
+      "file": {
+        "url": "https://easython-evidence-424051028041.s3.ap-northeast-2.amazonaws.com/contract_617a496a-99c4-4c7f-acbf-c2a3410206f0.pdf?<서명 파라미터 생략>",
+        "expiresAt": "2026-11-15T00:47:47+09:00",
+        "hash": "3bc1e105099a385ecb97e95eec2f2441c649091c7e0c1cb0b62a50ad98288865"
+      },
+      "terms": {
+        "wageType": "HOURLY",
+        "wageAmount": 9860,
+        "workStartTime": "08:00",
+        "workEndTime": "19:00",
+        "breakMinutesPerDay": 30,
+        "workDays": [
+          "MON",
+          "TUE",
+          "WED",
+          "... 외 3건 생략"
+        ],
+        "mealDeduction": 400000,
+        "payday": 10,
+        "contractStart": "2026-04-01",
+        "contractEnd": "2027-03-31",
+        "employerName": "한빛식품 (Hanbit Foods)",
+        "employerAddress": "경기도 용인시 수지구 죽전로 152 (단국대학교 죽전캠퍼스 미디어센터)",
+        "ownerName": "김한빛 (KIM HANBIT)"
+      },
+      "translation": {
+        "language": "vi",
+        "summary": "Hợp đồng lao động tiêu chuẩn cho công nhân nước ngoài tại công ty Hanbit Foods từ tháng 4 năm 2026 đến tháng 3 năm 2027. Lương cơ bản là 9.860 won/giờ, làm việc từ 8:00 sáng đến 7:00 tối, 6 ngày/tuần (thứ 2 đến thứ 7) với 30 phút nghỉ/ngày. Công ty cung cấp ký túc xá (250.000 won/tháng) và bữa ăn (150.000 won/tháng), được trừ từ lương hàng tháng. Lương được thanh toán vào ngày 10 hàng tháng."
+      },
+      "clauses": [
+        {
+          "id": "ec074651-fa69-48c2-bf02-9e529bce93a3",
+          "originalText": "신규 또는 재입국자: (12)개월, 사업장변경자: 년 월 일 ~ 년 월 일 - 계약기간: 2026년 4월 1일 ~ 2027년 3월 31일",
+          "translatedText": "Thời hạn hợp đồng: từ ngày 1 tháng 4 năm 2026 đến ngày 31 tháng 3 năm 2027 (12 tháng)",
+          "position": {
+            "page": 1,
+            "x": 0.35,
+            "y": 0.28,
+            "width": 0.6,
+            "height": 0.08
+          }
+        },
+        {
+          "id": "36a8b5cb-3e28-4d32-99de-294fe9c7909c",
+          "originalText": "08 시 00 분 ~ 19 시 00 분",
+          "translatedText": "Giờ làm việc: từ 8:00 sáng đến 7:00 tối",
+          "position": {
+            "page": 1,
+            "x": 0.1,
+            "y": 0.48,
+            "width": 0.4,
+            "height": 0.04
+          }
+        },
+        {
+          "id": "dbae6dfa-f4cb-4cd2-b16b-09475b3c0d7a",
+          "originalText": "30 minutes per day",
+          "translatedText": "Thời gian nghỉ: 30 phút mỗi ngày",
+          "position": {
+            "page": 2,
+            "x": 0.35,
+            "y": 0.08,
+            "width": 0.3,
+            "height": 0.03
+          }
+        },
+        "... 외 13건 생략"
+      ],
+      "reviews": [
+        {
+          "type": "MIN_WAGE",
+          "level": "CHECK",
+          "clauseId": null,
+          "message": "Lương giờ trong hợp đồng 9,860 won có thể thấp hơn mức lương tối thiểu năm 2026 là 10,320 won. Vui lòng kiểm tra."
+        },
+        {
+          "type": "MEAL_LODGING_DEDUCTION",
+          "level": "CHECK",
+          "clauseId": null,
+          "message": "Mỗi tháng khấu trừ 400,000 won tiền ăn ở. Vui lòng kiểm tra xem khoản mục và số tiền có đúng với thực tế bạn nhận được không."
+        },
+        {
+          "type": "BREAK_TIME_MISSING",
+          "level": "CHECK",
+          "clauseId": null,
+          "message": "Thời gian nghỉ 30 phút có thể ngắn hơn quy định cho ngày làm việc 11.0 giờ. Vui lòng kiểm tra."
+        }
+      ],
+      "disclaimer": "Đây chỉ là bản nháp tham khảo. Cần xác nhận với luật sư lao động hoặc Sở Lao động trước khi sử dụng.",
+      "createdAt": "2026-11-14T16:51:47+09:00"
+    },
+    "message": null
+  }
+}

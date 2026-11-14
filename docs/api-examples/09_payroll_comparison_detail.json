@@ -1,0 +1,55 @@
+{
+  "title": "급여 비교 상세(적용 조건·규칙·설명·면책)",
+  "request": {
+    "method": "GET",
+    "path": "/api/v1/payroll/comparisons/73dc42f2-21a8-4148-93dd-372a9fbecd95",
+    "query": null,
+    "auth": "Bearer <근로자 토큰>",
+    "body": null
+  },
+  "status": 200,
+  "response": {
+    "success": true,
+    "data": {
+      "id": "73dc42f2-21a8-4148-93dd-372a9fbecd95",
+      "month": "2026-10",
+      "status": "MISMATCH",
+      "expectedAmount": 3926745,
+      "actualAmount": 1700000,
+      "differenceAmount": 2226745,
+      "appliedConditions": {
+        "wageType": "HOURLY",
+        "wageAmount": 9860,
+        "workedMinutes": 20250,
+        "workDays": 27,
+        "breakApplied": 30,
+        "appliedRules": [
+          {
+            "code": "BASE",
+            "label": "Lương cơ bản"
+          },
+          {
+            "code": "OVERTIME_1_5",
+            "label": "Làm thêm giờ 1,5 lần"
+          }
+        ],
+        "unsupportedRules": [
+          "Lương ngày nghỉ tuần"
+        ]
+      },
+      "items": [],
+      "uncertainties": [],
+      "explanation": {
+        "language": "vi",
+        "text": "Lương dự kiến là 3,926,745 won, số tiền thực nhận là 1,700,000 won, thiếu 2,226,745 won. Vui lòng kiểm tra chi tiết từng khoản."
+      },
+      "actions": [
+        "CREATE_COMPLAINT",
+        "REQUEST_CONSULTATION"
+      ],
+      "disclaimer": "Đây chỉ là bản nháp tham khảo. Cần xác nhận với luật sư lao động hoặc Sở Lao động trước khi sử dụng.",
+      "createdAt": "2026-11-14T16:52:18+09:00"
+    },
+    "message": null
+  }
+}

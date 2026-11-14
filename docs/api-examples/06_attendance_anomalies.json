@@ -1,0 +1,35 @@
+{
+  "title": "이상 근무 패턴 탐지(무휴게 장시간·사후 시간 변경)",
+  "request": {
+    "method": "GET",
+    "path": "/api/v1/attendance/anomalies",
+    "query": "month=2026-11",
+    "auth": "Bearer <근로자 토큰>",
+    "body": null
+  },
+  "status": 200,
+  "response": {
+    "success": true,
+    "data": {
+      "patterns": [
+        {
+          "type": "LONG_HOURS_NO_BREAK",
+          "dates": [
+            "2026-11-05",
+            "2026-11-06"
+          ],
+          "message": "On 2 days you worked 8 hours or more with no break entered."
+        },
+        {
+          "type": "TIME_JUMP",
+          "dates": [
+            "2026-11-10"
+          ],
+          "message": "On 1 days clock times were changed by 2 hours or more. Please check the reasons."
+        }
+      ],
+      "disclaimer": "For reference only, not a legal judgment."
+    },
+    "message": null
+  }
+}

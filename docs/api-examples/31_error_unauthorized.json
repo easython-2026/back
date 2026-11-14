@@ -1,0 +1,17 @@
+{
+  "title": "오류 형식 — 인증 없음(401)",
+  "request": {
+    "method": "GET",
+    "path": "/api/v1/users/me",
+    "query": null,
+    "auth": null,
+    "body": null
+  },
+  "status": 401,
+  "response": {
+    "success": false,
+    "data": null,
+    "message": "로그인이 필요합니다.",
+    "errorCode": "UNAUTHORIZED"
+  }
+}

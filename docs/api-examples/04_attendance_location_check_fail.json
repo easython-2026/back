@@ -1,0 +1,28 @@
+{
+  "title": "GPS 위치 인증 실패(근무지에서 약 1.8km)",
+  "request": {
+    "method": "POST",
+    "path": "/api/v1/attendance/location-check",
+    "query": null,
+    "auth": "Bearer <근로자 토큰>",
+    "body": {
+      "type": "CLOCK_IN",
+      "latitude": 37.324583,
+      "longitude": 127.107417,
+      "accuracyMeters": 15
+    }
+  },
+  "status": 200,
+  "response": {
+    "success": true,
+    "data": {
+      "verified": false,
+      "failReason": "OUT_OF_RANGE",
+      "distanceMeters": 1805,
+      "radiusMeters": 100,
+      "verificationToken": null,
+      "expiresAt": null
+    },
+    "message": null
+  }
+}

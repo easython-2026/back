@@ -1,0 +1,28 @@
+{
+  "title": "출근 전 GPS 위치 인증(근무지 반경 100m) — 성공 시 1회용 인증 토큰",
+  "request": {
+    "method": "POST",
+    "path": "/api/v1/attendance/location-check",
+    "query": null,
+    "auth": "Bearer <근로자 토큰>",
+    "body": {
+      "type": "CLOCK_IN",
+      "latitude": 37.322302,
+      "longitude": 127.127631,
+      "accuracyMeters": 15
+    }
+  },
+  "status": 200,
+  "response": {
+    "success": true,
+    "data": {
+      "verified": true,
+      "failReason": null,
+      "distanceMeters": 0,
+      "radiusMeters": 100,
+      "verificationToken": "<redacted>",
+      "expiresAt": "2026-11-15T00:23:02+09:00"
+    },
+    "message": null
+  }
+}

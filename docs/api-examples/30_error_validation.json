@@ -1,0 +1,17 @@
+{
+  "title": "오류 형식 — 필수 파라미터 누락(400)",
+  "request": {
+    "method": "GET",
+    "path": "/api/v1/payroll/comparisons",
+    "query": null,
+    "auth": "Bearer <근로자 토큰>",
+    "body": null
+  },
+  "status": 400,
+  "response": {
+    "success": false,
+    "data": null,
+    "message": "Dữ liệu nhập không hợp lệ.",
+    "errorCode": "VALIDATION_ERROR"
+  }
+}

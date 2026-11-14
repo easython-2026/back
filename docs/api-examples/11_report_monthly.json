@@ -1,0 +1,67 @@
+{
+  "title": "월간 근무·임금 리포트",
+  "request": {
+    "method": "GET",
+    "path": "/api/v1/reports/monthly",
+    "query": "month=2026-10",
+    "auth": "Bearer <근로자 토큰>",
+    "body": null
+  },
+  "status": 200,
+  "response": {
+    "success": true,
+    "data": {
+      "month": "2026-10",
+      "work": {
+        "workDays": 27,
+        "totalWorkedMinutes": 20250,
+        "totalBreakMinutes": 810,
+        "days": [
+          {
+            "date": "2026-10-01",
+            "recordId": "a2be3184-c4db-4c46-8bfc-ab0ebf957783",
+            "clockInAt": "2026-10-01T07:30:00+09:00",
+            "clockOutAt": "2026-10-01T20:30:00+09:00",
+            "breakMinutes": 30,
+            "workedMinutes": 750,
+            "source": "MANUAL",
+            "flags": []
+          },
+          {
+            "date": "2026-10-02",
+            "recordId": "01fd521f-59fd-4cef-8522-a94bdb56f7dd",
+            "clockInAt": "2026-10-02T07:30:00+09:00",
+            "clockOutAt": "2026-10-02T20:30:00+09:00",
+            "breakMinutes": 30,
+            "workedMinutes": 750,
+            "source": "MANUAL",
+            "flags": []
+          },
+          {
+            "date": "2026-10-03",
+            "recordId": "b1c0bf7f-c413-466e-907e-b95050e97c7d",
+            "clockInAt": "2026-10-03T07:30:00+09:00",
+            "clockOutAt": "2026-10-03T20:30:00+09:00",
+            "breakMinutes": 30,
+            "workedMinutes": 750,
+            "source": "MANUAL",
+            "flags": []
+          },
+          "... 외 24건 생략"
+        ],
+        "edits": []
+      },
+      "wage": {
+        "comparisonId": "73dc42f2-21a8-4148-93dd-372a9fbecd95",
+        "status": "MISMATCH",
+        "expectedAmount": 3926745,
+        "actualAmount": 1700000,
+        "differenceAmount": 2226745,
+        "extraChecks": []
+      },
+      "evidenceCount": 27,
+      "disclaimer": "Đây chỉ là bản nháp tham khảo. Cần xác nhận với luật sư lao động hoặc Sở Lao động trước khi sử dụng."
+    },
+    "message": null
+  }
+}

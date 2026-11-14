@@ -1,0 +1,30 @@
+{
+  "title": "내 정보",
+  "request": {
+    "method": "GET",
+    "path": "/api/v1/users/me",
+    "query": null,
+    "auth": "Bearer <근로자 토큰>",
+    "body": null
+  },
+  "status": 200,
+  "response": {
+    "success": true,
+    "data": {
+      "id": "c11df2ec-4952-48b0-800b-cb7e767c124d",
+      "email": "hoa.demo@example.com",
+      "name": "Tran Thi Hoa",
+      "language": "vi",
+      "payday": null,
+      "paydayAlertEnabled": true,
+      "hasWorkplace": true,
+      "consents": {
+        "privacy": true,
+        "location": true,
+        "camera": true
+      },
+      "createdAt": "2026-11-14T16:51:47.088179+09:00"
+    },
+    "message": null
+  }
+}

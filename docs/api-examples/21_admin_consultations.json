@@ -1,0 +1,70 @@
+{
+  "title": "관리자 사건 목록(긴급도·담당자·차액)",
+  "request": {
+    "method": "GET",
+    "path": "/api/v1/admin/consultations",
+    "query": null,
+    "auth": "Bearer <상담기관 담당자 토큰>",
+    "body": null
+  },
+  "status": 200,
+  "response": {
+    "success": true,
+    "data": {
+      "consultations": [
+        {
+          "id": "838562a4-eb43-4a91-a385-cae44728d053",
+          "workerName": "Tran Thi Hoa",
+          "workerLanguage": "vi",
+          "headline": "10월 임금 222만원 미지급 의심",
+          "differenceAmount": 2226745,
+          "status": "RECEIVED",
+          "urgencyLevel": null,
+          "aiSuggestedUrgency": "HIGH",
+          "assignee": null,
+          "hasNewMessage": false,
+          "receivedAt": "2026-11-14T16:52:27+09:00"
+        },
+        {
+          "id": "183f0689-bc65-4fca-ba78-1b1f14e57e1d",
+          "workerName": "Pham Duc Anh",
+          "workerLanguage": "vi",
+          "headline": "10월 임금 28만원 미지급 의심",
+          "differenceAmount": 286840,
+          "status": "CLOSED",
+          "urgencyLevel": "LOW",
+          "aiSuggestedUrgency": "LOW",
+          "assignee": {
+            "id": "cca8d7e4-dfc5-11f1-92c1-0efff4d291db",
+            "name": "박담당"
+          },
+          "hasNewMessage": false,
+          "receivedAt": "2026-11-14T14:44:18+09:00"
+        },
+        {
+          "id": "354de7c0-1953-4dc7-b423-3774af411278",
+          "workerName": "Raj Kumar",
+          "workerLanguage": "en",
+          "headline": "10월 임금 222만원 미지급 의심",
+          "differenceAmount": 2228500,
+          "status": "REFERRED",
+          "urgencyLevel": "HIGH",
+          "aiSuggestedUrgency": "HIGH",
+          "assignee": {
+            "id": "cca8dbe8-dfc5-11f1-92c1-0efff4d291db",
+            "name": "이담당"
+          },
+          "hasNewMessage": false,
+          "receivedAt": "2026-11-14T14:43:55+09:00"
+        },
+        "... 외 4건 생략"
+      ],
+      "pageInfo": {
+        "currentPage": 1,
+        "totalPages": 1,
+        "totalCount": 7
+      }
+    },
+    "message": null
+  }
+}

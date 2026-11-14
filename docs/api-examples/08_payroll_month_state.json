@@ -1,0 +1,28 @@
+{
+  "title": "월별 급여 비교 상태",
+  "request": {
+    "method": "GET",
+    "path": "/api/v1/payroll/comparisons",
+    "query": "month=2026-10",
+    "auth": "Bearer <근로자 토큰>",
+    "body": null
+  },
+  "status": 200,
+  "response": {
+    "success": true,
+    "data": {
+      "month": "2026-10",
+      "state": "COMPARED",
+      "statementId": "e6f7f209-4ab5-4a18-9285-4b4849b5e869",
+      "payday": "2026-11-10",
+      "comparison": {
+        "id": "73dc42f2-21a8-4148-93dd-372a9fbecd95",
+        "status": "MISMATCH",
+        "expectedAmount": 3926745,
+        "actualAmount": 1700000,
+        "differenceAmount": 2226745
+      }
+    },
+    "message": null
+  }
+}

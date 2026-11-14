@@ -1,0 +1,22 @@
+{
+  "title": "관리자 대시보드 집계",
+  "request": {
+    "method": "GET",
+    "path": "/api/v1/admin/dashboard",
+    "query": null,
+    "auth": "Bearer <상담기관 담당자 토큰>",
+    "body": null
+  },
+  "status": 200,
+  "response": {
+    "success": true,
+    "data": {
+      "newCount": 3,
+      "inProgressCount": 3,
+      "closedCount": 1,
+      "highUrgencyCount": 4,
+      "unreadMessageCount": 0
+    },
+    "message": null
+  }
+}

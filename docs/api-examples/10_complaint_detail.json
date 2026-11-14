@@ -1,0 +1,104 @@
+{
+  "title": "진정서 초안(한국어 템플릿 + 모국어 번역, 청구 항목, 증거)",
+  "request": {
+    "method": "GET",
+    "path": "/api/v1/complaints/4355ed1a-d447-4551-a90b-f4b1066b3e99",
+    "query": null,
+    "auth": "Bearer <근로자 토큰>",
+    "body": null
+  },
+  "status": 200,
+  "response": {
+    "success": true,
+    "data": {
+      "id": "4355ed1a-d447-4551-a90b-f4b1066b3e99",
+      "status": "DONE",
+      "translationStatus": "DONE",
+      "failReason": null,
+      "comparisonId": "73dc42f2-21a8-4148-93dd-372a9fbecd95",
+      "reviewed": true,
+      "periodStart": "2026-10-01",
+      "periodEnd": "2026-10-31",
+      "complainant": {
+        "name": "Tran Thi Hoa"
+      },
+      "respondent": {
+        "name": "한빛식품 (Hanbit Foods)",
+        "address": "경기도 용인시 수지구 죽전로 152 (단국대학교 죽전캠퍼스 미디어센터)",
+        "ownerName": "김한빛"
+      },
+      "summary": {
+        "ko": "근무기간 2026-10-01 ~ 2026-10-31, 시급 9,860원, 총 실근무시간 337시간 30분, 예상 임금 3,926,745원, 실제 지급액 1,700,000원, 차액 2,226,745원, 첨부 증거 29건.",
+        "translated": "Khoảng thời gian làm việc 2026-10-01 ~ 2026-10-31, lương theo giờ 9,860 won, tổng thời gian làm việc thực tế 337 giờ 30 phút, lương dự kiến 3,926,745 won, số tiền thực tế trả 1,700,000 won, chênh lệch 2,226,745 won, 29 bằng chứng đính kèm."
+      },
+      "draft": {
+        "ko": {
+          "title": "임금 체불 진정서",
+          "body": "진정인 Tran Thi Hoa은(는) 한빛식품 (Hanbit Foods)(주소: 경기도 용인시 수지구 죽전로 152 (단국대학교 죽전캠퍼스 미디어센터), 대표자: 김한빛)에서 2026-10-01 ~ 2026-10-31 기간 동안 근로하였으나, 아래와 같이 임금을 전부 지급받지 못하여 진정합니다.\n\n【근로계약 내용】 시급 9,860원, 근무시간 08:00~19:00, 근무일 월, 화, 수, 목, 금, 토, 임금지급일 매월 10일, 숙식비 공제 매월 400,000원.\n\n【근무 사실】 해당 기간 27일 근무하였고, 총 실근무시간은 337시간 30분입니다. 출퇴근 기록은 모두 사후에 직접 입력한 기록입니다(첨부 증거 29건 참고).\n\n【임금 내역】 근로계약과 근무기록에 따른 예상 임금은 3,926,745원이나, 실제 지급받은 금액은 1,700,000원으로 2,226,745원이 지급되지 않았습니다.\n\n【요청】 위 미지급 임금 2,226,745원이 지급될 수 있도록 사실관계를 조사하여 시정해 주시기 바랍니다.",
+          "unpaidAmount": 2226745,
+          "claims": [
+            {
+              "label": "임금 차액",
+              "amount": 2226745
+            }
+          ]
+        },
+        "translated": {
+          "language": "vi",
+          "title": "Đơn tố cáo về nợ lương",
+          "body": "Người tố cáo Tran Thi Hoa đã làm việc tại Hanbit Foods (Công ty TNHH Hanbit Foods) (địa chỉ: Tòa nhà Media Center, Khuôn viên Đại học Dankook Jukjeon, 152 Jukjeon-ro, Suji-gu, Yongin-si, Gyeonggi-do, Đại diện: Kim Han Bit) trong khoảng thời gian từ 2026-10-01 đến 2026-10-31, nhưng không nhận được toàn bộ lương như sau nên tôi tố cáo.\n\n【Nội dung hợp đồng lao động】 Lương theo giờ 9,860 won, thời gian làm việc 08:00~19:00, ngày làm việc thứ Hai, thứ Ba, thứ Tư, thứ Năm, thứ Sáu, thứ Bảy, ngày trả lương hàng tháng là ngày 10, khấu trừ ăn ở hàng tháng 400,000 won.\n\n【Sự thật về công việc】 Đã làm việc 27 ngày trong khoảng thời gian đó, tổng thời gian làm việc thực tế là 337 giờ 30 phút. Tất cả các bản ghi chép chấm công đều được nhập trực tiếp sau này (xem 29 bằng chứng đính kèm).\n\n【Chi tiết lương】 Lương dự kiến theo hợp đồng lao động và bản ghi chép công việc là 3,926,745 won, nhưng số tiền thực tế nhận được là 1,700,000 won, do đó 2,226,745 won chưa được trả.\n\n【Yêu cầu】 Vui lòng điều tra sự thật và sửa chữa để có thể trả lương chưa thanh toán 2,226,745 won nêu trên."
+        }
+      },
+      "evidences": [
+        {
+          "id": "PAYSLIP-e6f7f209-4ab5-4a18-9285-4b4849b5e869",
+          "type": "PAYSLIP",
+          "title": "2026-11-14 Bảng lương / số tiền đã nhận",
+          "occurredAt": "2026-11-14T16:52:18+09:00"
+        },
+        {
+          "id": "CONTRACT-617a496a-99c4-4c7f-acbf-c2a3410206f0",
+          "type": "CONTRACT",
+          "title": "2026-11-14 Hợp đồng lao động (bản gốc)",
+          "occurredAt": "2026-11-14T16:51:47+09:00"
+        },
+        {
+          "id": "MANUAL_RECORD-eee70aa4-dae5-44f7-a3e0-586bd3e31cea",
+          "type": "MANUAL_RECORD",
+          "title": "2026-10-31 Bản ghi làm việc nhập sau (thủ công)",
+          "occurredAt": "2026-10-31T07:30:00+09:00"
+        },
+        {
+          "id": "MANUAL_RECORD-de9c52e0-b835-4b75-bc7c-cf278071bbfb",
+          "type": "MANUAL_RECORD",
+          "title": "2026-10-30 Bản ghi làm việc nhập sau (thủ công)",
+          "occurredAt": "2026-10-30T07:30:00+09:00"
+        },
+        "... 외 25건 생략"
+      ],
+      "officialGuide": {
+        "agencyName": "Văn phòng Lao động khu vực thuộc Bộ Việc làm và Lao động",
+        "steps": [
+          "Đến Văn phòng Lao động khu vực quản lý nơi làm việc của bạn, hoặc nộp trực tuyến qua cổng thông tin lao động của Bộ Việc làm và Lao động.",
+          "Nộp đơn khiếu nại (PDF) tạo từ ứng dụng này cùng danh sách chứng cứ.",
+          "Sau khi nộp, thanh tra lao động được phân công sẽ điều tra sự việc (ví dụ triệu tập các bên).",
+          "Ứng dụng này không nộp đơn thay bạn. Nên nhờ luật sư lao động hoặc tổ chức hỗ trợ kiểm tra trước khi nộp."
+        ],
+        "contacts": [
+          {
+            "name": "Trung tâm tư vấn của Bộ Việc làm và Lao động",
+            "phone": "1350"
+          },
+          {
+            "name": "Trung tâm tư vấn Hệ thống cấp phép việc làm cho lao động nước ngoài (đa ngôn ngữ)",
+            "phone": "1577-0071"
+          }
+        ]
+      },
+      "disclaimer": "Đây chỉ là bản nháp tham khảo. Cần xác nhận với luật sư lao động hoặc Sở Lao động trước khi sử dụng.",
+      "createdAt": "2026-11-14T16:52:18+09:00",
+      "updatedAt": "2026-11-14T16:52:27+09:00"
+    },
+    "message": null
+  }
+}

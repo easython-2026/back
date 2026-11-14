@@ -1,0 +1,33 @@
+{
+  "title": "상담 메시지(원문 + 자동 번역)",
+  "request": {
+    "method": "GET",
+    "path": "/api/v1/consultations/df0b76f8-c5be-461e-9a69-10f23946fd00/messages",
+    "query": null,
+    "auth": "Bearer <근로자 토큰>",
+    "body": null
+  },
+  "status": 200,
+  "response": {
+    "success": true,
+    "data": {
+      "messages": [
+        {
+          "id": "7ca284a9-1740-41e9-99d0-226f94fa2e64",
+          "sender": "STAFF",
+          "text": "Hello. This is the counseling representative. I am reviewing the work records and salary documents you sent.",
+          "koText": "안녕하세요. 상담 담당자입니다. 보내주신 근무 기록과 급여 자료를 확인하고 있습니다.",
+          "translationStatus": "DONE",
+          "attachedEvidences": [],
+          "createdAt": "2026-11-14T14:44:20+09:00"
+        }
+      ],
+      "pageInfo": {
+        "currentPage": 1,
+        "totalPages": 1,
+        "totalCount": 1
+      }
+    },
+    "message": null
+  }
+}

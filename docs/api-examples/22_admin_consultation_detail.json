@@ -1,0 +1,183 @@
+{
+  "title": "관리자 사건 상세(동의한 범위의 자료만, AI 제안 긴급도)",
+  "request": {
+    "method": "GET",
+    "path": "/api/v1/admin/consultations/df0b76f8-c5be-461e-9a69-10f23946fd00",
+    "query": null,
+    "auth": "Bearer <상담기관 담당자 토큰>",
+    "body": null
+  },
+  "status": 200,
+  "response": {
+    "success": true,
+    "data": {
+      "id": "df0b76f8-c5be-461e-9a69-10f23946fd00",
+      "status": "INFO_REQUESTED",
+      "worker": {
+        "name": "Bat-Erdene",
+        "language": "en"
+      },
+      "summary": {
+        "ko": "Bat-Erdene 노동자(사용 언어: 영어)의 2026-10 임금 비교 결과입니다.\n예상 임금 2,299,000원, 실제 지급액 1,500,000원, 차액 799,000원(불일치).\n계약 조건: 시급 11,000원, 근무시간 08:00~17:00, 숙식비 공제 350,000원.\n근무 22일, 총 실근무시간 198시간 0분.\n공유 범위: 요약, 근로계약서, 근무기록, 급여명세서, 진정서 초안.\n상담 희망 내용: 제 급여에서 며칠이 누락되었습니다."
+      },
+      "timeline": [
+        {
+          "date": "2026-10-01",
+          "clockInAt": "2026-10-01T07:00:00+09:00",
+          "clockOutAt": "2026-10-01T17:00:00+09:00",
+          "breakMinutes": 60,
+          "workedMinutes": 540,
+          "source": "MANUAL",
+          "flags": [],
+          "edits": []
+        },
+        {
+          "date": "2026-10-02",
+          "clockInAt": "2026-10-02T07:00:00+09:00",
+          "clockOutAt": "2026-10-02T17:00:00+09:00",
+          "breakMinutes": 60,
+          "workedMinutes": 540,
+          "source": "MANUAL",
+          "flags": [],
+          "edits": []
+        },
+        {
+          "date": "2026-10-03",
+          "clockInAt": "2026-10-03T07:00:00+09:00",
+          "clockOutAt": "2026-10-03T17:00:00+09:00",
+          "breakMinutes": 60,
+          "workedMinutes": 540,
+          "source": "MANUAL",
+          "flags": [],
+          "edits": []
+        },
+        "... 외 19건 생략"
+      ],
+      "wageComparison": {
+        "expectedAmount": 2299000,
+        "actualAmount": 1500000,
+        "differenceAmount": 799000,
+        "items": [],
+        "uncertainties": [],
+        "appliedConditions": {
+          "wageType": "HOURLY",
+          "wageAmount": 11000,
+          "workedMinutes": 11880,
+          "workDays": 22,
+          "breakApplied": 60,
+          "appliedRules": [
+            {
+              "code": "BASE",
+              "label": "기본급"
+            },
+            {
+              "code": "OVERTIME_1_5",
+              "label": "연장근로 1.5배"
+            }
+          ],
+          "unsupportedRules": [
+            "주휴수당"
+          ]
+        }
+      },
+      "contract": {
+        "terms": {
+          "wageType": "HOURLY",
+          "wageAmount": 11000,
+          "workStartTime": "08:00",
+          "workEndTime": "17:00",
+          "breakMinutesPerDay": 60,
+          "workDays": [
+            "MON",
+            "TUE",
+            "WED",
+            "... 외 3건 생략"
+          ],
+          "mealDeduction": 350000,
+          "payday": 10,
+          "contractStart": "2026-11-01",
+          "contractEnd": "2027-10-31",
+          "employerName": "OO건설 현장",
+          "employerAddress": "인천 서구 데모로 88",
+          "ownerName": "정OO"
+        },
+        "reviews": [
+          {
+            "type": "MEAL_LODGING_DEDUCTION",
+            "level": "CHECK",
+            "clauseId": "5d4cebe5-8d24-41d0-91d9-10bc1f3371b9",
+            "message": "매월 350,000원이 숙식비로 공제됩니다. 공제 항목과 금액이 실제 제공받는 숙식과 맞는지 확인이 필요합니다."
+          }
+        ]
+      },
+      "evidences": [
+        {
+          "id": "MANUAL_RECORD-89ab5545-e91f-41c1-9ba0-8e1c90f63ac8",
+          "type": "MANUAL_RECORD",
+          "title": "2026-10-26 사후 입력 근무기록(수동)",
+          "occurredAt": "2026-10-26T07:00:00+09:00",
+          "fileUrl": null,
+          "hash": null
+        },
+        {
+          "id": "MANUAL_RECORD-bb1c6bed-7074-4299-9944-11a3f136899c",
+          "type": "MANUAL_RECORD",
+          "title": "2026-10-24 사후 입력 근무기록(수동)",
+          "occurredAt": "2026-10-24T07:00:00+09:00",
+          "fileUrl": null,
+          "hash": null
+        },
+        {
+          "id": "MANUAL_RECORD-fe978245-0788-4506-889f-159de91f33cd",
+          "type": "MANUAL_RECORD",
+          "title": "2026-10-23 사후 입력 근무기록(수동)",
+          "occurredAt": "2026-10-23T07:00:00+09:00",
+          "fileUrl": null,
+          "hash": null
+        },
+        "... 외 21건 생략"
+      ],
+      "complaintDraft": {
+        "title": "임금 체불 진정서",
+        "body": "진정인 Bat-Erdene은(는) OO건설 현장(주소: 인천 서구 데모로 88, 대표자: 정OO)에서 2026-10-01 ~ 2026-10-31 기간 동안 근로하였으나, 아래와 같이 임금을 전부 지급받지 못하여 진정합니다.\n\n【근로계약 내용】 시급 11,000원, 근무시간 08:00~17:00, 근무일 월, 화, 수, 목, 금, 토, 임금지급일 매월 10일, 숙식비 공제 매월 350,000원.\n\n【근무 사실】 해당 기간 22일 근무하였고, 총 실근무시간은 198시간입니다. 출퇴근 기록은 모두 사후에 직접 입력한 기록입니다(첨부 증거 24건 참고).\n\n【임금 내역】 근로계약과 근무기록에 따른 예상 임금은 2,299,000원이나, 실제 지급받은 금액은 1,500,000원으로 799,000원이 지급되지 않았습니다.\n\n【요청】 위 미지급 임금 799,000원이 지급될 수 있도록 사실관계를 조사하여 시정해 주시기 바랍니다.",
+        "unpaidAmount": 799000
+      },
+      "urgencyLevel": "HIGH",
+      "aiSuggestedUrgency": "MEDIUM",
+      "assignee": {
+        "id": "cca8d7e4-dfc5-11f1-92c1-0efff4d291db",
+        "name": "박담당"
+      },
+      "infoRequests": [
+        {
+          "id": "17d1190a-e705-4d19-b738-d411c3fc5f1d",
+          "message": "10월 급여명세서 사진과 통장 입금 내역을 추가로 보내주세요.",
+          "requestedItems": [
+            "PAYSLIP",
+            "OTHER"
+          ],
+          "createdAt": "2026-11-14T14:44:23+09:00"
+        },
+        {
+          "id": "2ad6bfec-3051-4bd3-9d1f-c54290212d61",
+          "message": "ㅁㅁㅁ",
+          "requestedItems": [],
+          "createdAt": "2026-11-14T14:46:12+09:00"
+        }
+      ],
+      "referrals": [],
+      "result": null,
+      "consent": {
+        "sharedScope": [
+          "SUMMARY",
+          "CONTRACT",
+          "ATTENDANCE",
+          "... 외 2건 생략"
+        ],
+        "agreedAt": "2026-11-14T14:43:33+09:00"
+      },
+      "disclaimer": "참고용 자료이며 법적 판단이 아닙니다."
+    },
+    "message": null
+  }
+}

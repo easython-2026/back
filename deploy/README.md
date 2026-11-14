@@ -7,7 +7,7 @@
 3. AWS RDS 공식 CA 번들을 받아 각 인증서를 Java PKCS12 truststore에 넣고 `/etc/easython/rds-truststore.p12`에 둔다. JDBC에는 RDS가 발급한 호스트명을 사용한다. 새 DB에는 빈 `easython` 데이터베이스를 만들고 초기 기동에 한해 `DDL_AUTO=update`로 스키마를 만든 후 `validate`로 복귀한다. 기존 DB에서 스키마 변경이 필요하면 백업과 스테이징 검증을 먼저 한다.
 4. `./gradlew test bootJar`로 빌드한다. 전용 시스템 계정 `easython`을 만들고 실행용 JAR를 `/opt/easython/easython.jar`에 설치한다. 정적 Noto Sans KR TTF를 서비스 계정이 읽을 수 있는 경로에 두고, 환경변수 예시를 `/etc/easython/easython.env`에 복사해 실제 값을 입력한다. 파일 소유자는 root, 권한은 0600으로 설정한다.
 5. `easython.service`를 `/etc/systemd/system/`에 설치한 뒤 `sudo systemctl daemon-reload`, `sudo systemctl enable --now easython`을 실행한다. `journalctl -u easython -n 100`과 `curl -fsS http://127.0.0.1:8080/api/v1/languages`로 확인한다.
-6. 내도메인.한국에서 확보한 도메인의 A 레코드를 EC2의 고정 공인 IPv4로 연결한다. 한글 도메인은 nginx와 Certbot에 DNS의 ASCII 표기(Punycode)를 사용한다. nginx 설정의 `api.example.com`을 교체해 설치하고 `sudo nginx -t`를 통과시킨다. `sudo certbot --nginx -d 실제도메인`으로 인증서를 발급하고 HTTPS 리다이렉트와 `sudo certbot renew --dry-run`을 확인한다. 인증서 발급 한도에 걸리면 재시도 시점을 확인하거나 ZeroSSL ACME 계정과 EAB 설정으로 발급한다. 현재 운영은 kro.kr 공용 발급 한도 때문에 ZeroSSL(`--server https://acme.zerossl.com/v2/DV90`, EAB)로 발급했고 `certbot-renew.timer`로 자동 갱신한다.
+6. 내도메인.한국에서 확보한 도메인의 A 레코드를 EC2의 고정 공인 IPv4로 연결한다. 한글 도메인은 nginx와 Certbot에 DNS의 ASCII 표기(Punycode)를 사용한다. nginx 설정의 `api.example.com`을 교체해 설치하고 `sudo nginx -t`를 통과시킨다. `sudo certbot --nginx -d 실제도메인`으로 인증서를 발급하고 HTTPS 리다이렉트와 `sudo certbot renew --dry-run`을 확인한다. 인증서 발급 한도에 걸리면 재시도 시점을 확인하거나 ZeroSSL ACME 계정과 EAB 설정으로 발급한다. 해커톤 운영 당시에는 kro.kr 공용 발급 한도 때문에 ZeroSSL(`--server https://acme.zerossl.com/v2/DV90`, EAB)로 발급했고 `certbot-renew.timer`로 자동 갱신한다.
 7. HTTPS에서 언어 목록, 프론트 origin의 CORS preflight, 파일 업로드와 서명 URL 다운로드를 확인한다. 서명 URL은 만료 전까지 전달받은 사람이 열 수 있으므로 로그나 공유 문서에 남기지 않는다.
 
 기존 로컬 증거 파일을 운영 DB와 함께 이전하는 경우, 쓰기를 잠시 멈추고 파일명(객체 키)을 그대로 유지해 S3 버킷에 복사한다. 건수와 SHA-256을 대조한 뒤 저장소를 전환한다. DB와 파일 백업은 같은 시점으로 맞춘다.
@@ -35,6 +35,8 @@ python3 scripts/demo-smoke.py http://127.0.0.1:8080 /tmp/easython-demo.pdf
 | 실기기 | iOS Safari와 Android Chrome에서 HTTPS 프론트로 로그인해 위치 승인/거부, 카메라 업로드, CORS, 서명 URL의 접근/만료와 PDF 다운로드를 확인한다. |
 
 ## 4. CI/CD와 운영 구성 (ALB + Auto Scaling + Docker)
+
+> 해커톤 기간(2026-11)에 운영한 구성입니다. 현재는 서버를 내렸고, 아래는 같은 구성을 다시 올릴 때의 참고 기록입니다.
 
 ```
 사용자 → ALB(HTTPS, ACM에 가져온 인증서, 80→443) → Auto Scaling 그룹 EC2 2대(2a·2c, t3.micro)
