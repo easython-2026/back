@@ -38,17 +38,25 @@ public class GatewayAiClient implements AiClient {
 		String system = """
 				You read Korean employment contracts for migrant workers. Respond with ONE JSON object only, no markdown, no commentary.
 				Never invent values: use null when something is not written in the document.
-				Day ranges are inclusive and end exactly where the text ends: "월요일부터 토요일까지" = MON,TUE,WED,THU,FRI,SAT (NOT Sunday).""";
+				Day ranges are inclusive and end exactly where the text ends: "월요일부터 토요일까지" = MON,TUE,WED,THU,FRI,SAT (NOT Sunday).
+				Checkbox options count only when marked ([✔], [V], [O], filled); unmarked [ ] options are not chosen.
+				Wage: take the type and amount of the BASE PAY (기본급/시급/월급). If the base pay is hourly (시간급, 시급, "(월, 시간, 일, 주)급" with 시간 marked),
+				wageType is HOURLY and wageAmount is that hourly amount — even when a monthly figure such as 월 통상임금 (monthly normal wage) is also written.
+				Use MONTHLY only when the base pay itself is a monthly amount. 월 통상임금 / monthly normal wage is a derived total, never the base pay.
+				In the government standard form (표준근로계약서, 7. 임금) the row "기본급[(월, 시간, 일, 주)급] ( X )원" holds the base pay X: report X as wageAmount, never the 월 통상임금 total above it.
+				Sanity check: a base pay below 100,000 KRW is an hourly wage (HOURLY), not a monthly one.
+				Meal/lodging deduction: add up EVERY monthly amount the worker pays or has deducted for lodging (숙박, 숙소, 기숙사) and meals (식사, 식비)
+				— e.g. 숙박 월 200,000원 + 식사 월 150,000원 = 350000. Use null only when no such amount is written.""";
 		String user = """
 				Read the attached Korean employment contract and return JSON exactly in this shape:
 				{
 				 "terms": {
 				  "wageType": "HOURLY" or "MONTHLY",
-				  "wageAmount": integer KRW (hourly wage or monthly wage),
+				  "wageAmount": integer KRW of the base pay (the hourly amount when wageType is HOURLY),
 				  "workStartTime": "HH:mm", "workEndTime": "HH:mm",
 				  "breakMinutesPerDay": integer minutes or null if not stated,
 				  "workDays": ["MON","TUE","WED","THU","FRI","SAT","SUN"] subset,
-				  "mealDeduction": integer KRW deducted per month for meals/lodging, or null,
+				  "mealDeduction": integer KRW per month = lodging + meals combined, or null,
 				  "payday": day of month 1-31,
 				  "contractStart": "YYYY-MM-DD", "contractEnd": "YYYY-MM-DD",
 				  "employerName": string, "employerAddress": string, "ownerName": string
