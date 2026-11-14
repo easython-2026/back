@@ -16,6 +16,8 @@ aws ssm get-parameter --name /easython/env --with-decryption --query Parameter.V
 TAG=$(aws ssm get-parameter --name /easython/image-tag --query Parameter.Value --output text)
 
 cat > /etc/easython/nginx.conf <<'EOF'
+resolver 127.0.0.11 valid=60s ipv6=off;  # Docker 내장 DNS — Vercel IP가 바뀌어도 따라감
+
 server {
     listen 80;
     client_max_body_size 20m;
@@ -33,8 +35,29 @@ server {
         proxy_set_header X-Forwarded-Prefix "";
     }
 
+    # 프론트(Vercel)를 같은 도메인으로: /admin/ → 관리자 웹, 그 외 → 사용자 앱. 같은 출처라 CORS 불필요.
+    # 관리자 웹은 Vite base '/admin/' + BrowserRouter basename '/admin' 으로 빌드돼야 한다(Vercel 쪽은 /admin 없이 서빙되므로 접두사를 떼고 전달).
+    location = /admin {
+        return 301 /admin/;
+    }
+
+    location /admin/ {
+        set $admin_upstream front-ten-ochre.vercel.app;
+        rewrite ^/admin/(.*)$ /$1 break;
+        proxy_pass https://$admin_upstream;
+        proxy_ssl_server_name on;
+        proxy_ssl_name $admin_upstream;
+        proxy_set_header Host $admin_upstream;
+        proxy_set_header X-Forwarded-For $http_x_forwarded_for;
+    }
+
     location / {
-        return 404;
+        set $user_upstream front-user-app-ochre.vercel.app;
+        proxy_pass https://$user_upstream;
+        proxy_ssl_server_name on;
+        proxy_ssl_name $user_upstream;
+        proxy_set_header Host $user_upstream;
+        proxy_set_header X-Forwarded-For $http_x_forwarded_for;
     }
 }
 EOF
