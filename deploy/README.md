@@ -47,11 +47,11 @@ python3 scripts/demo-smoke.py http://127.0.0.1:8080 /tmp/easython-demo.pdf
 | 언제 | 동작 |
 | --- | --- |
 | PR, push | `./gradlew test bootJar` (실패 시 테스트 리포트를 아티팩트로 첨부) |
-| `main` 반영 | 테스트 통과 후 `production` 환경으로 배포: Docker 이미지를 빌드해 ECR `easython:<커밋 SHA>`에 올리고, 서버 환경값을 SSM Parameter Store `/easython/env`(SecureString)에, 태그를 `/easython/image-tag`에 기록한 뒤 ASG 인스턴스 새로 고침(새 인스턴스를 먼저 띄워 ALB 상태 확인 통과 후 이전 인스턴스 종료). 실패하면 이전 이미지 태그·환경값으로 되돌리고 워크플로는 실패(상태 확인을 못 넘긴 새 인스턴스는 서비스에 투입되지 않음) |
+| `main` 반영 | 테스트 통과 후 `production` 환경으로 배포: Docker 이미지를 빌드해 ECR `easython:<커밋 SHA>`에 올리고, 서버 환경값을 SSM Parameter Store `/easython/env`(SecureString)에, 태그를 `/easython/image-tag`에 기록한 뒤 ASG 인스턴스 새로 고침(새 인스턴스를 먼저 띄워 ALB 상태 확인 통과 후 이전 인스턴스 종료). 인스턴스 새로 고침 또는 공개 헬스 체크 실패 시 진행 중인 교체를 중단하고 이전 이미지 태그·환경값을 복원한 뒤 ASG 인스턴스 전체를 다시 교체한다. 복구 후 공개 헬스 체크를 실행하며, 복구에 성공해도 원래 배포는 실패로 기록된다 |
 
 - 인스턴스 시작: 시작 템플릿 `easython-lt`의 user-data(`deploy/asg-user-data.sh`)가 Docker를 설치하고 SSM에서 환경값·이미지 태그를 읽어 앱·nginx 컨테이너를 띄운다. 서버에 SSH 키나 열린 22번 포트가 없고, 접속은 SSM Session Manager로 한다.
 - 이미지(`Dockerfile`): CI가 만든 JAR와 배포 버킷 `assets/`의 PDF 폰트·RDS CA truststore를 넣는다. 앱은 비root 사용자로 실행한다.
-- AWS 접근: GitHub OIDC로 `easython-github-deploy` 역할을 임시로 받는다(장기 액세스 키 없음). 이 역할은 production 환경 작업에서만 받을 수 있고(저장소가 GitHub 불변 OIDC subject를 쓰므로 신뢰 정책의 `sub`는 `repo:easython-2026@355774593/back@1455203623:environment:production`; 이 값이 틀리면 `Not authorized to perform sts:AssumeRoleWithWebIdentity`로 실패), 권한은 ECR 푸시, `/easython/*` 파라미터 읽기·쓰기, `easython-asg` 인스턴스 새로 고침, 배포 버킷 `assets/` 읽기뿐이다.
+- AWS 접근: GitHub OIDC로 `easython-github-deploy` 역할을 임시로 받는다(장기 액세스 키 없음). 이 역할은 production 환경 작업에서만 받을 수 있고(저장소가 GitHub 불변 OIDC subject를 쓰므로 신뢰 정책의 `sub`는 `repo:easython-2026@355774593/back@1455203623:environment:production`; 이 값이 틀리면 `Not authorized to perform sts:AssumeRoleWithWebIdentity`로 실패), 권한은 ECR 푸시, `/easython/*` 파라미터 읽기·쓰기, `easython-asg` 인스턴스 새로 고침 및 취소(`autoscaling:CancelInstanceRefresh`), 배포 버킷 `assets/` 읽기뿐이다.
 - 비밀값: 저장소 Settings → Environments → `production` 의 **Secrets**(`DB_PASSWORD`, `JWT_SECRET`, `AI_API_KEY`, 선택 `MAIL_USERNAME`·`MAIL_PASSWORD`). 이 환경은 `main` 브랜치에서만 사용할 수 있다.
 - 비밀이 아닌 설정: 같은 환경의 **Variables**(`DB_URL`, `CORS_ORIGINS`, `PUBLIC_BASE_URL`, `S3_BUCKET`, `AI_PROVIDER`, `HEALTH_URL`, `PDF_FONT_PATH`, 배포용 `AWS_DEPLOY_ROLE_ARN`·`DEPLOY_BUCKET`).
 - 환경값은 배포 때마다 Secrets·Variables로 새로 만들어진다. 값은 GitHub에서 바꾸고 재배포(Actions → CI/CD → Run workflow, main 선택)한다. Git Bash에서 `gh variable set`으로 `/`로 시작하는 값을 넣을 때는 `MSYS_NO_PATHCONV=1`을 붙인다(안 그러면 Windows 경로로 바뀐다).

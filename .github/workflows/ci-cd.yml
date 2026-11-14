@@ -49,7 +49,7 @@ jobs:
     needs: test
     if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
-    timeout-minutes: 30
+    timeout-minutes: 65
     environment: production
     permissions:
       contents: read
@@ -60,6 +60,7 @@ jobs:
     env:
       ASG: easython-asg
       REPO: easython
+      HEALTH_URL: ${{ vars.HEALTH_URL }}
     steps:
       - uses: actions/checkout@v7
       - uses: actions/download-artifact@v8
@@ -119,36 +120,17 @@ jobs:
             echo "PDF_FONT_PATH=$PDF_FONT_PATH"
           } > "$RUNNER_TEMP/app.env"
           # 실패 시 되돌릴 이전 값(버전 번호와 태그만 보관)
-          echo "PREV_ENV_VERSION=$(aws ssm get-parameter --name /easython/env --query Parameter.Version --output text)" >> "$GITHUB_ENV"
-          echo "PREV_TAG=$(aws ssm get-parameter --name /easython/image-tag --query Parameter.Value --output text)" >> "$GITHUB_ENV"
+          PREV_ENV_VERSION=$(aws ssm get-parameter --name /easython/env --query Parameter.Version --output text)
+          PREV_TAG=$(aws ssm get-parameter --name /easython/image-tag --query Parameter.Value --output text)
+          test -n "$PREV_ENV_VERSION" && test -n "$PREV_TAG"
+          printf "PREV_ENV_VERSION=%s\nPREV_TAG=%s\n" "$PREV_ENV_VERSION" "$PREV_TAG" >> "$GITHUB_ENV"
           aws ssm put-parameter --name /easython/env --type SecureString --overwrite --value "file://$RUNNER_TEMP/app.env" > /dev/null
           rm -f "$RUNNER_TEMP/app.env"
           aws ssm put-parameter --name /easython/image-tag --type String --overwrite --value "$GITHUB_SHA" > /dev/null
 
-      - name: Rolling replace (instance refresh, new instances first)
-        run: |
-          RID=$(aws autoscaling start-instance-refresh --auto-scaling-group-name "$ASG" \
-            --preferences '{"MinHealthyPercentage":100,"MaxHealthyPercentage":200,"InstanceWarmup":60}' \
-            --query InstanceRefreshId --output text)
-          echo "refresh: $RID"
-          for _ in $(seq 1 150); do
-            read -r STATUS PCT <<< "$(aws autoscaling describe-instance-refreshes --auto-scaling-group-name "$ASG" \
-              --instance-refresh-ids "$RID" --query 'InstanceRefreshes[0].[Status,PercentageComplete]' --output text)"
-            echo "$(date +%T) $STATUS $PCT%"
-            case "$STATUS" in Successful) exit 0 ;; Failed|Cancelled|RollbackSuccessful|RollbackFailed) exit 1 ;; esac
-            sleep 10
-          done
-          exit 1
+      - name: Rolling replace and public health check
+        run: bash deploy/refresh-asg.sh deploy
 
-      - name: Restore previous image and env on failure
-        if: failure() && env.PREV_TAG != ''
-        run: |
-          umask 077
-          aws ssm get-parameter --name "/easython/env:$PREV_ENV_VERSION" --with-decryption --query Parameter.Value --output text > "$RUNNER_TEMP/prev.env"
-          aws ssm put-parameter --name /easython/env --type SecureString --overwrite --value "file://$RUNNER_TEMP/prev.env" > /dev/null
-          rm -f "$RUNNER_TEMP/prev.env"
-          aws ssm put-parameter --name /easython/image-tag --type String --overwrite --value "$PREV_TAG" > /dev/null
-          echo "restored image $PREV_TAG (instances that failed health checks were never put into service)"
-
-      - name: Public health check
-        run: curl -fsS --retry 5 --retry-delay 3 "${{ vars.HEALTH_URL }}" > /dev/null && echo healthy
+      - name: Restore previous image and settings across the ASG
+        if: failure() && env.PREV_TAG != '' && env.PREV_ENV_VERSION != ''
+        run: bash deploy/refresh-asg.sh rollback
