@@ -56,3 +56,4 @@ python3 scripts/demo-smoke.py http://127.0.0.1:8080 /tmp/easython-demo.pdf
 - 비밀이 아닌 설정: 같은 환경의 **Variables**(`DB_URL`, `CORS_ORIGINS`, `PUBLIC_BASE_URL`, `S3_BUCKET`, `AI_PROVIDER`, `HEALTH_URL`, `PDF_FONT_PATH`, 배포용 `AWS_DEPLOY_ROLE_ARN`·`DEPLOY_BUCKET`).
 - 환경값은 배포 때마다 Secrets·Variables로 새로 만들어진다. 값은 GitHub에서 바꾸고 재배포(Actions → CI/CD → Run workflow, main 선택)한다. Git Bash에서 `gh variable set`으로 `/`로 시작하는 값을 넣을 때는 `MSYS_NO_PATHCONV=1`을 붙인다(안 그러면 Windows 경로로 바뀐다).
 - `deploy/easython.service`·`deploy/nginx.conf`는 단일 EC2(비컨테이너) 구성용으로 남겨 둔다.
+- 프론트 경로 분리(같은 도메인): nginx 컨테이너가 `/api/v1/` → 백엔드, `/admin/` → 관리자 웹(Vercel, 접두사 제거 후 전달), 그 외 → 사용자 앱(Vercel). 관리자 웹은 Vite `base: '/admin/'` + `BrowserRouter basename="/admin"`으로 빌드해야 하고, 사용자 앱은 SPA 새로고침을 위해 Vercel `rewrites`(모든 경로 → `/index.html`)가 필요하다. user-data를 바꾸면 시작 템플릿 새 버전을 만들고 instance refresh 해야 반영된다(CI 배포는 이미지·환경값만 바꾼다).
