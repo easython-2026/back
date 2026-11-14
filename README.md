@@ -158,9 +158,9 @@ AI_LIVE_TEST=1 AI_API_KEY=... ./gradlew test --tests '*GatewayAiLiveTest'
 - 증거 원본은 덮어쓰기 불가, 조회는 만료되는 서명 URL로만.
 - 운영 프로필은 비공개 S3와 만료되는 presigned URL을 사용한다. 주휴수당·야간·휴일 가산은 현재 "미지원"으로 표시한다.
 
-## 운영 배포와 데모
+## 다시 배포하려면
 
-[EC2·RDS·S3·HTTPS 배포 및 투안 리허설](deploy/README.md)을 따른다. 실제 상담기관과 담당자 계정은 운영 DB에 등록한다(담당자는 `users.role='ADMIN'`, `agency_id` 지정, 비밀번호는 BCrypt 해시). 최저임금 설정은 해마다 확인한다.
+해커톤 운영 서버는 내렸다. 같은 구성을 다시 올릴 때는 [배포 기록(EC2·RDS·S3·HTTPS·ALB/ASG·CI/CD)](deploy/README.md)을 따른다. 실제 상담기관과 담당자 계정은 운영 DB에 등록한다(담당자는 `users.role='ADMIN'`, `agency_id` 지정, 비밀번호는 BCrypt 해시). 최저임금 설정은 해마다 확인한다.
 
 ## 팀
 
