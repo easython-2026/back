@@ -83,6 +83,8 @@ src/main/java/com/easython/
 
 ## CI/CD
 
+> 운영 당시 구성입니다. 서버 종료 후 배포 단계와 GitHub production 환경(비밀값)은 제거했고, 지금 워크플로는 PR·push 테스트만 돌립니다. 배포 단계 원본은 git 기록에서 볼 수 있습니다.
+
 ```
 PR/push ─▶ GitHub Actions: ./gradlew test bootJar
 main 병합 ─▶ Docker 이미지 빌드 → ECR push → 환경값 SSM 갱신
